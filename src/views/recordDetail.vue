@@ -87,6 +87,8 @@
         }
 
         .result-content{
+            background: #fff;
+            min-height: 200px;
             .num{
                 margin: 8px 10px;
                 font-size: 12px;

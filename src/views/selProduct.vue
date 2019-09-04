@@ -30,9 +30,6 @@
                                 <van-radio  @click="radioHandClick($event,item)" v-model="radio" :name="item"></van-radio>
                             </div>
                         </div>
-
-
-
                 </van-cell>
             </van-list>
 
@@ -72,7 +69,9 @@
                 }, 500);
             },
             radioHandClick(e,val){
-                this.$router.push('./newStorage?product='+val);
+                this.$router.replace({
+                    path:'./newStorage?product='+val
+                });
             }
         }
     }

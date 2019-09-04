@@ -17,19 +17,17 @@
         </div>
 
         <div class="result">
-            <span class="label-title">扫码结果 (共0件)</span>
-            <span>清空</span>
+            <span class="label-title">扫码结果 (共{{epcs.length}}件)</span>
+            <span @click="empty">清空</span>
         </div>
 
         <div class="result-content">
-            <van-tag class="num" plain>5415641561<span class="del">x</span></van-tag>
-            <van-tag class="num" plain>2341243463<span class="del">x</span></van-tag>
-            <van-tag class="num" plain>2386748679<span class="del">x</span></van-tag>
-            <van-tag class="num" plain>2579692867<span class="del">x</span></van-tag>
+            <van-tag class="num" v-for="(item,index) in epcs" plain>{{item}}<span class="del">x</span></van-tag>
         </div>
 
         <div class="operation">
-            <van-button class="btn" type="info">开始扫描</van-button>
+            <van-button class="btn" @click="start" v-if="!isStart" type="info">开始扫描</van-button>
+            <van-button class="btn" @click="end"  v-if="isStart" type="info">暂停扫描</van-button>
             <van-button class="btn"  type="primary">确认入库</van-button>
         </div>
 
@@ -37,8 +35,29 @@
 </template>
 
 <script>
+    import scanner from  '../utils/scanner'
+    import Vue from 'vue';
+    import { Notify  } from 'vant';
+
+    Vue.use(Notify);
     export default {
         name: "newStorage",
+        data(){
+          return{
+              isStart:false,
+              scanner:null,
+              epcs:[]
+          }
+        },
+        watch:{
+            $route: {
+                handler: function(val, oldVal){
+                    console.log(val);
+                },
+                // 深度观察监听
+                deep: true
+            },
+        },
         mounted(){
             if (this.$route.query.product){
                 console.log(this.$route.query.product);
@@ -46,7 +65,33 @@
         },
         methods:{
             selProduct(){
-                this.$router.push('./selProduct')
+                this.$router.replace({
+                    path:'./selProduct'
+                })
+            },
+            start(){
+                this.scanner = Scanner.create(true);
+                let that = this;
+                this.isStart = true;
+                this.scanner.subscribe({
+                    onScan: function (epcs) {
+                        that.epcs = [...that.epcs,...epcs]
+                    }
+                });
+                this.scanner.startScan();
+            },
+            end(){
+                this.isStart = false;
+
+                //组件销毁，把资源释放
+                this.scanner.destroy();
+            },
+            empty(){
+                if (this.isStart){
+                    Notify({ type: 'danger', message: '请先暂停扫描' });
+                    return false
+                }
+                this.epcs = []
             }
         }
     }
@@ -107,10 +152,13 @@
         }
 
         .result-content{
+            margin-bottom: 50px;
+            z-index: 1;
             .num{
                 margin: 8px 10px;
                 font-size: 12px;
                 position: relative;
+
                 .del{
                     position: absolute;
                     width: 12px;
@@ -136,6 +184,7 @@
             bottom: 0;
             left: 0;
             width: 100%;
+            z-index: 9999;
             .btn{
                 width: 50%;
             }

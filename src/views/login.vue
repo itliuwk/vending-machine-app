@@ -5,8 +5,8 @@
                     v-model="username"
                     clearable
                     size="large"
-                    label="用户名"
-                    placeholder="请输入用户名"
+                    label="账号"
+                    placeholder="请输入账号"
             />
 
             <van-field
@@ -21,19 +21,42 @@
         </van-cell-group>
 
         <div class="sign-in">
-            <van-button class="sign-in-btn" type="info">登录</van-button>
+            <van-button class="sign-in-btn" @click="signIn" :loading ="Loading" loading-text="登录" type="info">登录</van-button>
         </div>
 
     </div>
 </template>
 
 <script>
+    import Vue from 'vue';
+    import { Notify  } from 'vant';
+
+    Vue.use(Notify);
     export default {
         name: "login",
         data() {
             return {
-                username: '',
-                password: ''
+                Loading:false,
+                username: '13444444444',
+                password: '123456'
+            }
+        },
+        methods:{
+            signIn(){
+                if (!this.username){
+                    Notify({ type: 'danger', message: '请输入账号' });
+
+                    return false;
+                }
+                if (!this.password){
+                    Notify({ type: 'danger', message: '请输入密码' });
+                    return false;
+                }
+                this.Loading = true;
+                setTimeout(()=>{
+                    this.Loading = false;
+                    this.$router.push('/');
+                },1000)
             }
         }
     }
