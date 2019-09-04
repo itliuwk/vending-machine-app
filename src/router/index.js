@@ -23,6 +23,16 @@ export const constantRoutes = [
         path: '/selProduct',
         name: 'selProduct',
         component: resolve => require(['@/views/selProduct'], resolve)
+    },
+    {
+        path: '/storageRecord',
+        name: 'storageRecord',
+        component: resolve => require(['@/views/storageRecord'], resolve)
+    },
+    {
+        path: '/recordDetail',
+        name: 'recordDetail',
+        component: resolve => require(['@/views/recordDetail'], resolve)
     }
 
 ];

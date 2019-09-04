@@ -4,7 +4,7 @@
             <div class="item" @click="toStorage">
                 <span>新建入库</span>
             </div>
-            <div class="item">
+            <div class="item"  @click="toRecord">
                 <span>入库记录</span>
             </div>
 
@@ -13,7 +13,7 @@
             <div class="item">
                 <span>修改密码</span>
             </div>
-            <div class="item">
+            <div class="item"  @click="toLogin">
                 <span>退出</span>
             </div>
         </div>
@@ -31,6 +31,12 @@
         methods: {
             toStorage(){
                 this.$router.push('./newStorage')
+            },
+            toRecord(){
+                this.$router.push('./storageRecord')
+            },
+            toLogin(){
+                this.$router.push('./login')
             }
         }
     }

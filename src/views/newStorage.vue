@@ -4,7 +4,7 @@
         <div class="label">
             <span class="label-title">商品：</span>
             <div class="label-content">
-                <span class="selProduct">选择商品</span>
+                <span class="selProduct" @click="selProduct">选择商品</span>
             </div>
         </div>
 
@@ -38,7 +38,17 @@
 
 <script>
     export default {
-        name: "newStorage"
+        name: "newStorage",
+        mounted(){
+            if (this.$route.query.product){
+                console.log(this.$route.query.product);
+            }
+        },
+        methods:{
+            selProduct(){
+                this.$router.push('./selProduct')
+            }
+        }
     }
 </script>
 

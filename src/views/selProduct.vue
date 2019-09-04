@@ -72,7 +72,7 @@
                 }, 500);
             },
             radioHandClick(e,val){
-                console.log(val);
+                this.$router.push('./newStorage?product='+val);
             }
         }
     }
