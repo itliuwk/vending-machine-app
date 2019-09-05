@@ -1,6 +1,6 @@
 <template>
     <div class="page">
-        <div class="returnTitle" style="padding: 20px;">RFID售货机入库盘点端</div>
+        <div class="returnTitle" style="padding: 20px;text-align: center">RFID售货机入库盘点端</div>
         <div class="content">
             <div class="item" @click="toStorage">
                 <img src="../assets/newStorage.png" alt="">

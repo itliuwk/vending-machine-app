@@ -34,7 +34,7 @@
             </div>
 
             <div class="result-content">
-                <van-tag class="num" v-for="(item,index) in epcs" plain>{{item}}<span class="del">x</span></van-tag>
+                <van-tag class="num" v-for="(item,index) in epcs" plain>{{item}}<span class="del" @click="del(index)">x</span></van-tag>
             </div>
 
             <div class="operation">
@@ -103,8 +103,10 @@
                 }
                 this.epcs = []
             },
+            del(idx){
+                this.epcs.splice(idx,1)
+            },
             confirm() {
-
                 if (this.isStart) {
                     Notify({type: 'danger', message: '请先暂停扫描'});
                     return false
@@ -210,7 +212,7 @@
         .result-content {
             margin-bottom: 50px;
             z-index: 1;
-
+            background: #444956;
             .num {
                 margin: 8px 10px;
                 font-size: 12px;
