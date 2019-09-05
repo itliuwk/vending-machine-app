@@ -153,7 +153,7 @@
 <style scoped lang="scss">
     .newStorage{
         background: #444956;
-        height: 100%;
+
     }
     .newStorage_c {
         padding: 50px 25px 0;
@@ -210,7 +210,8 @@
         }
 
         .result-content {
-            margin-bottom: 50px;
+
+            min-height: 300px;
             z-index: 1;
             background: #444956;
             .num {

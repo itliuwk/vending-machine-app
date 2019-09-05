@@ -79,6 +79,9 @@
                     height: 60px;
                 }
             }
+            .item:last-child{
+                border-bottom-right-radius: 5px;
+            }
         }
 
     }

@@ -92,10 +92,11 @@
 
 <style scoped lang="scss">
 
-    .storageRecord{
+    .storageRecord {
         overflow: hidden;
         height: 100%;
     }
+
     .list {
         height: calc(100% - 60px);
         overflow: auto;
@@ -141,6 +142,7 @@
         .content-left {
             display: flex;
             color: #bbb;
+
             img {
                 width: 80px;
                 height: 80px;
@@ -157,8 +159,21 @@
         }
     }
 
-   /deep/ .van-cell{
+    /deep/ .van-cell {
         background: #444956;
+        border-bottom: 0.02667rem solid #ebedf0;
+    }
+
+    /deep/ .van-cell:not(:last-child)::after {
+        position: absolute;
+        box-sizing: border-box;
+        content: ' ';
+        pointer-events: none;
+        right: 0;
+        bottom: 0;
+        left: 0.42667rem;
+        border-bottom: none;
+        transform: scaleY(.5);
     }
 
 
