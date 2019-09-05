@@ -55,7 +55,7 @@
                 this.Loading = true;
                 setTimeout(()=>{
                     this.Loading = false;
-                    this.$router.push('/');
+                    this.$router.push('/index');
                 },1000)
             }
         }

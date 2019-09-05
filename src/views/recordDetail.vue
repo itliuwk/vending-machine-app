@@ -2,23 +2,23 @@
     <div class="recordDetail">
         <div class="label">
             <span>入库单号</span>
-            <span>65456465411</span>
+            <span>{{detail.id}}</span>
         </div>
         <div class="label">
             <span>入库时间</span>
-            <span>2019-9-4 17:45:16</span>
+            <span>{{detail.createdDate}}</span>
         </div>
         <div class="label">
             <span>入库件数</span>
-            <span>100件</span>
+            <span>{{detail.quantity}}件</span>
         </div>
         <div class="product">
             <span>入库商品</span>
             <div class="content">
-                <img src="https://s2.ax1x.com/2019/09/03/nACikt.jpg" alt="">
+                <img :src="detail.productImage" alt="">
                 <div class="content-info">
-                    <div>可口可乐</div>
-                    <div>￥10</div>
+                    <div>{{detail.productName}}</div>
+                    <div>￥{{detail.productPrice}}</div>
                 </div>
             </div>
         </div>
@@ -26,15 +26,14 @@
             <span>EPC列表</span>
         </div>
         <div class="result-content">
-            <van-tag class="num" plain>5415641561</van-tag>
-            <van-tag class="num" plain>2341243463</van-tag>
-            <van-tag class="num" plain>2386748679</van-tag>
-            <van-tag class="num" plain>2579692867</van-tag>
+            <van-tag class="num" v-for="item in detail.epcs" plain>{{item}}</van-tag>
         </div>
     </div>
 </template>
 
 <script>
+    import {stockIns_detail} from '@/api/index'
+    import {formatAll} from '@/utils/date'
     export default {
         name: "recordDetail",
         data(){
@@ -43,8 +42,17 @@
             }
         },
         mounted() {
-            if (this.$route.query.detail){
-                console.log(this.$route.query.detail);
+            if (this.$route.query.id){
+                this.get_detail({id:this.$route.query.id});
+            }
+        },
+        methods:{
+            get_detail(params){
+                stockIns_detail(params).then(res=>{
+                    console.log(res);
+                    res.createdDate = formatAll( res.createdDate);
+                    this.detail = res
+                })
             }
         }
     }

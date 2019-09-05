@@ -1,7 +1,7 @@
 <template>
     <div class="product">
         <van-search
-                v-model="value"
+                v-model="params.query"
                 placeholder="请输入商品名"
                 show-action
                 shape="round"
@@ -17,19 +17,19 @@
                     finished-text="没有更多了"
                     @load="onLoad"
             >
-                <van-cell v-for="item in list" :key="item">
-                        <div class="content">
-                            <div class="content-left">
-                                <img src="https://s2.ax1x.com/2019/09/03/nACikt.jpg" alt="">
-                                <div class="content-left-info">
-                                    <div>可口可乐</div>
-                                    <div>￥10</div>
-                                </div>
-                            </div>
-                            <div class="content-right">
-                                <van-radio  @click="radioHandClick($event,item)" v-model="radio" :name="item"></van-radio>
+                <van-cell v-for="item in list" :key="item.id">
+                    <div class="content">
+                        <div class="content-left">
+                            <img :src="item.image" alt="">
+                            <div class="content-left-info">
+                                <div>{{item.name}}</div>
+                                <div>￥{{item.price}}</div>
                             </div>
                         </div>
+                        <div class="content-right">
+                            <van-radio @click="radioHandClick($event,item)" v-model="radio" :name="item.id"></van-radio>
+                        </div>
+                    </div>
                 </van-cell>
             </van-list>
 
@@ -38,39 +38,48 @@
 </template>
 
 <script>
+    import {products_list} from '@/api/index'
+
     export default {
         name: "selProduct",
         data() {
             return {
-                value: '',
-                radio:'',
+                radio: '',
                 list: [],
+                params: {
+                    query: '',
+                    from: 0,
+                    size: 10,
+                },
                 loading: false,
                 finished: false
             }
         },
+        mounted() {
+            this.get_list()
+        },
         methods: {
-            onSearch(val) {
-                console.log(val);
+            onSearch() {
+                this.get_list()
             },
-            onLoad() {
-                // 异步更新数据
-                setTimeout(() => {
-                    for (let i = 0; i < 10; i++) {
-                        this.list.push(this.list.length + 1);
-                    }
-                    // 加载状态结束
+            get_list() {
+                products_list(this.params).then(res => {
+                    this.list = [...this.list, ...res];
                     this.loading = false;
-
                     // 数据全部加载完成
                     if (this.list.length >= 40) {
                         this.finished = true;
                     }
-                }, 500);
+                })
             },
-            radioHandClick(e,val){
+            onLoad() {
+                this.get_list();
+                // 加载状态结束
+
+            },
+            radioHandClick(e, val) {
                 this.$router.replace({
-                    path:'./newStorage?product='+val
+                    path: './newStorage?product=' + val
                 });
             }
         }
@@ -87,28 +96,36 @@
             overflow: auto;
         }
 
-        .content{
+        .content {
             display: flex;
-            >div{
-                flex: 1;
+
+            > div {
+                flex: 6;
             }
-            .content-right{
+
+            .content-right {
+                flex: 1;
                 text-align: right;
                 display: flex;
                 justify-content: flex-end;
                 align-items: center;
-                >div{
+
+                > div {
                     display: inline-block;
                 }
             }
-            .content-left{
+
+            .content-left {
                 display: flex;
-                img{
+
+                img {
                     width: 80px;
                     height: 80px;
                 }
-                .content-left-info{
-                    div:nth-child(2){
+
+                .content-left-info {
+                    margin-left: 20px;
+                    div:nth-child(2) {
                         padding-top: 20px;
                     }
                 }

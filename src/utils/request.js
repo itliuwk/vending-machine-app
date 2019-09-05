@@ -20,14 +20,15 @@ service.interceptors.request.use(
       //如果参数value是空，就不需要传给后台
       if (config.params) {
         var _params = JSON.parse(JSON.stringify(config.params))
-        _.map(_params, (value, key) => {
-          if (!value && typeof value != "number"/* 排斥数字判断 */ && typeof value !== 'boolean'/* 排斥boolean判断 */) {
-            if (config.noIngore && config.noIngore.findIndex((item => item == key)) >= 0) {
-            } else {
-              delete _params[key]
-            }
-          }
-        })
+        //   console.log(_params);
+        //   _.map(_params, (value, key) => {
+        //   if (!value && typeof value != "number"/* 排斥数字判断 */ && typeof value !== 'boolean'/* 排斥boolean判断 */) {
+        //     if (config.noIngore && config.noIngore.findIndex((item => item == key)) >= 0) {
+        //     } else {
+        //       delete _params[key]
+        //     }
+        //   }
+        // });
 
         config.params = _params
       }

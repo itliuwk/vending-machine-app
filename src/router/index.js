@@ -5,9 +5,14 @@ Vue.use(Router);
 
 export const constantRoutes = [
     {
-        path: '/',
+        path: '/index',
         name: 'index',
         component: resolve => require(['@/views/index'], resolve)
+    },
+    {
+        path: '/',
+        name: '/',
+        redirect:'/login',
     },
     {
         path: '/login',

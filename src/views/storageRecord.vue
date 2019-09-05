@@ -8,21 +8,21 @@
         >
             <van-cell
                     v-for="item in list"
-                    :key="item"
+                    :key="item.id"
             >
-                <div @click="detail(item)">
+                <div @click="detail(item.id)">
                     <div class="oddMumbers">
-                        <span>单号：968464646413</span>
-                        <span>2019-9-4 17:17:54</span>
+                        <span>单号：{{item.id}}</span>
+                        <span>{{item.createdDate}}</span>
                     </div>
                     <div class="content">
                         <div class="content-left">
-                            <img src="https://s2.ax1x.com/2019/09/03/nACikt.jpg" alt="">
+                            <img :src="item.image" alt="">
                             <div class="content-left-info">
-                                <div>可口可乐</div>
+                                <div>{{item.productName}}</div>
                                 <div class="oddMumbers">
-                                    <span style="color: red">￥10</span>
-                                    <span>100件</span>
+                                    <span style="color: red">￥{{item.productPrice}}</span>
+                                    <span>{{item.quantity}}件</span>
                                 </div>
                             </div>
                         </div>
@@ -34,34 +34,48 @@
 </template>
 
 <script>
+    import {stockIns} from '@/api/index'
+    import {formatAll} from '@/utils/date'
     export default {
         name: "storageRecord",
         data() {
             return {
                 list: [],
+                params: {
+                    query: '',
+                    from: 0,
+                    size: 10,
+                },
                 loading: false,
                 finished: false
             };
         },
-
+        mounted() {
+            this.get_stockIns()
+        },
         methods: {
-            onLoad() {
-                // 异步更新数据
-                setTimeout(() => {
-                    for (let i = 0; i < 10; i++) {
-                        this.list.push(this.list.length + 1);
-                    }
-                    // 加载状态结束
+            get_stockIns(){
+                stockIns(this.params).then(res => {
+                    res.map(item=>{
+                        item.createdDate = formatAll( item.createdDate);
+                        return item;
+                    });
+
+                    this.list = [...this.list, ...res];
                     this.loading = false;
 
                     // 数据全部加载完成
                     if (this.list.length >= 40) {
                         this.finished = true;
                     }
-                }, 500);
+                })
+            },
+            onLoad() {
+                this.get_stockIns();
+                // 加载状态结束
             },
             detail(val) {
-                this.$router.push('./recordDetail?detail=' + val)
+                this.$router.push('./recordDetail?id=' + val)
             }
         }
     }
