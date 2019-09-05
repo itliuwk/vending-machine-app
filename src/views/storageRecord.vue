@@ -98,7 +98,7 @@
     }
 
     .list {
-        height: calc(100% - 60px);
+        height: calc(100% - 50px);
         overflow: auto;
         background: #444956;
 

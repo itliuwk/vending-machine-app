@@ -152,6 +152,7 @@
 
 <style scoped lang="scss">
     .newStorage{
+        height: 100vh;
         background: #444956;
 
     }
@@ -211,7 +212,6 @@
 
         .result-content {
 
-            min-height: 300px;
             z-index: 1;
             background: #444956;
             .num {
