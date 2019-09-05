@@ -1,15 +1,10 @@
 <template>
     <div class="product">
-        <van-search
-                v-model="params.query"
-                placeholder="请输入商品名"
-                show-action
-                shape="round"
-                @search="onSearch"
-        >
-            <div slot="action" @click="onSearch">搜索</div>
-        </van-search>
-
+        <div class="returnTitle" @click="returnGo">
+            <img src="../assets/return.png" alt="">
+            <span>商品选择</span>
+        </div>
+        <van-search placeholder="请输入商品名"  @search="onSearch" v-model="params.query" />
         <div class="list">
             <van-list
                     v-model="loading"
@@ -33,6 +28,9 @@
                 </van-cell>
             </van-list>
 
+        </div>
+        <div class="confirm">
+            <van-button type="info" @click="confirm" class="btn">确认</van-button>
         </div>
     </div>
 </template>
@@ -90,13 +88,13 @@
 
             },
             radioHandClick(e, val) {
-
-                // this.$router.replace({
-                //     path: './newStorage?product=' + val
-                // });
-                this.$router.go(-1);
                 this.$store.commit('SET_PRODUCT', val)
-
+            },
+            confirm(){
+                this.$router.go(-1);
+            },
+            returnGo(){
+                this.$router.go(-1)
             }
         }
     }
@@ -107,9 +105,17 @@
         height: 100%;
         overflow: hidden;
 
+
         .list {
-            height: calc(100% - 60px);
+            height: calc(100% - 150px);
             overflow: auto;
+            background: #444956;
+
+            /deep/ .van-cell__value--alone{
+                color: #fff;
+                border-radius: 5px;
+                padding-left: 5px;
+            }
         }
 
         .content {
@@ -133,7 +139,7 @@
 
             .content-left {
                 display: flex;
-
+                color: #bbbbbb;
                 img {
                     width: 80px;
                     height: 80px;
@@ -147,6 +153,44 @@
                     }
                 }
             }
+        }
+
+        .confirm{
+            position: fixed;
+            bottom: 0;
+            width: 100vw;
+            .btn{
+                width: 100%;
+            }
+        }
+
+
+        /deep/ .van-cell{
+            background: #444956;
+        }
+
+        /deep/ .van-cell:not(:last-child)::after{
+            border-bottom: 0.02667rem solid #666;
+        }
+
+        /deep/ .van-search{
+            background: #444956!important;
+            border-bottom: 0.02667rem solid #666;
+        }
+        /deep/ .van-search__content{
+            background: #444956;
+        }
+
+        /deep/  .van-search .van-cell__value--alone{
+            border: 1px solid #fff;
+            border-radius: 5px;
+            padding-left: 5px;
+            .van-field__control{
+                color: #fff;
+            }
+        }
+        /deep/.van-field__left-icon{
+            color: #fff;
         }
     }
 </style>

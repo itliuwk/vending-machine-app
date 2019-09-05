@@ -1,6 +1,11 @@
 <template>
     <div class="storageRecord">
+        <div class="returnTitle" @click="returnGo">
+            <img src="../assets/return.png" alt="">
+            <span>入库记录</span>
+        </div>
         <van-list
+                class="list"
                 v-model="loading"
                 :finished="finished"
                 finished-text="没有更多了"
@@ -10,7 +15,7 @@
                     v-for="item in list"
                     :key="item.id"
             >
-                <div @click="detail(item.id)">
+                <div style="background: #444956;" @click="detail(item.id)">
                     <div class="oddMumbers">
                         <span>单号：{{item.id}}</span>
                         <span>{{item.createdDate}}</span>
@@ -36,6 +41,7 @@
 <script>
     import {stockIns} from '@/api/index'
     import {formatAll} from '@/utils/date'
+
     export default {
         name: "storageRecord",
         data() {
@@ -54,10 +60,10 @@
             this.get_stockIns()
         },
         methods: {
-            get_stockIns(){
+            get_stockIns() {
                 stockIns(this.params).then(res => {
-                    res.map(item=>{
-                        item.createdDate = formatAll( item.createdDate);
+                    res.map(item => {
+                        item.createdDate = formatAll(item.createdDate);
                         return item;
                     });
 
@@ -76,13 +82,29 @@
             },
             detail(val) {
                 this.$router.push('./recordDetail?id=' + val)
+            },
+            returnGo() {
+                this.$router.go(-1)
             }
         }
     }
 </script>
 
 <style scoped lang="scss">
+
+    .storageRecord{
+        overflow: hidden;
+        height: 100%;
+    }
+    .list {
+        height: calc(100% - 60px);
+        overflow: auto;
+        background: #444956;
+
+    }
+
     .oddMumbers {
+        color: #bbb;
         font-size: 14px;
         display: flex;
 
@@ -118,7 +140,7 @@
 
         .content-left {
             display: flex;
-
+            color: #bbb;
             img {
                 width: 80px;
                 height: 80px;
@@ -134,4 +156,10 @@
             }
         }
     }
+
+   /deep/ .van-cell{
+        background: #444956;
+    }
+
+
 </style>

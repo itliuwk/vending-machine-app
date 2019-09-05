@@ -29,6 +29,7 @@ time, mark, audio, video {
 
 body {
     line-height:1;
+    color: #bbbbbb;
 }
 
 :focus {
@@ -101,4 +102,19 @@ hr {
 
 input, select {
     vertical-align:middle;
+}
+
+
+.returnTitle {
+    padding: 10px;
+    background: #121212;
+    font-size: 14px;
+    color: #fff;
+}
+.returnTitle img{
+    vertical-align: middle;
+}
+
+.returnTitle span{
+
 }

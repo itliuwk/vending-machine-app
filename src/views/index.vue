@@ -1,21 +1,24 @@
 <template>
     <div class="page">
-        <div>
+        <div class="returnTitle" style="padding: 20px;">RFID售货机入库盘点端</div>
+        <div class="content">
             <div class="item" @click="toStorage">
-                <span>新建入库</span>
+                <img src="../assets/newStorage.png" alt="">
+                新建入库
             </div>
-            <div class="item"  @click="toRecord">
-                <span>入库记录</span>
+            <div class="item" @click="toRecord">
+                <img src="../assets/storageRecord.png" alt="">
+                入库记录
+            </div>
+            <div class="item">
+                <img src="../assets/changePassword.png" alt="">
+                修改密码
+            </div>
+            <div class="item" @click="toLogin">
+                <img src="../assets/signOut.png" alt="">
+                退出
             </div>
 
-        </div>
-        <div>
-            <div class="item">
-                <span>修改密码</span>
-            </div>
-            <div class="item"  @click="toLogin">
-                <span>退出</span>
-            </div>
         </div>
     </div>
 </template>
@@ -23,22 +26,20 @@
 <script>
     export default {
         name: "index",
-        data(){
-            return{
-
-            }
+        data() {
+            return {}
         },
-        mounted(){
-            this.$store.commit('SET_PRODUCT','')
+        mounted() {
+            this.$store.commit('SET_PRODUCT', '')
         },
         methods: {
-            toStorage(){
+            toStorage() {
                 this.$router.push('./newStorage')
             },
-            toRecord(){
+            toRecord() {
                 this.$router.push('./storageRecord')
             },
-            toLogin(){
+            toLogin() {
                 this.$router.push('./login')
             }
         }
@@ -48,20 +49,37 @@
 <style scoped lang="scss">
     .page {
         height: 100%;
-        text-align: center;
-        padding-top: 50px;
+        background: #444956;
+        box-sizing: border-box;
 
-        .item {
-            display: inline-block;
-            width: 100px;
-            height: 100px;
-            line-height: 100px;
-            text-align: center;
-            border: 1px solid #bbb;
-            margin: 20px;
-            font-size: 16px;
+
+        .content {
+            margin: 50px 20px 20px;
+            border-top: 2px solid #121212;
+            border-left: 2px solid #121212;
             border-radius: 5px;
-            background: #fff;
+
+            .item {
+                display: inline-block;
+                width: 50%;
+                height: 5rem;
+                line-height: 2rem;
+                text-align: center;
+                border-right: 2px solid #121212;
+                border-bottom: 2px solid #121212;
+                font-size: 16px;
+                background: #444956;
+                color: #bbbbbb;
+                padding-top: 30px;
+                img{
+
+                    margin: 0 auto;
+                    display: block;
+                    width: 60px;
+                    height: 60px;
+                }
+            }
         }
+
     }
 </style>

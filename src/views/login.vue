@@ -64,7 +64,7 @@
 
 <style scoped lang="scss">
     .login {
-        background: #F8F8F8;
+        background: #444956;
         margin: 0px auto;
         padding: 20px;
         padding-top: 200px;

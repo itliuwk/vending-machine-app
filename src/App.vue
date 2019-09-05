@@ -19,6 +19,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
 
   height: 100vh;
-  background: #F8F8F8;
 }
 </style>

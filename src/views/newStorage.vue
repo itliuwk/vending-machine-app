@@ -1,44 +1,51 @@
 <template>
     <div class="newStorage">
+        <div class="returnTitle" @click="returnGo">
+            <img src="../assets/return.png" alt="">
+            <span>新建入库</span>
+        </div>
+        <div class="newStorage_c">
 
-        <div class="label">
-            <span class="label-title">商品：</span>
-            <div class="label-content">
-                <span class="selProduct" v-if="!product.id" @click="selProduct">选择商品</span>
-                <div v-else class="product" @click="selProduct">
-                    <img :src="product.image" alt="">
-                    <div>
-                        <div>{{product.name}}</div>
-                        <div>￥{{product.price}}</div>
+            <div class="label">
+                <span class="label-title">商品：</span>
+                <div class="label-content">
+                    <span class="selProduct" v-if="!product.id" @click="selProduct">选择商品</span>
+                    <div v-else class="product" @click="selProduct">
+                        <img :src="product.image" alt="">
+                        <div>
+                            <div>{{product.name}}</div>
+                            <div>￥{{product.price}}</div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="label">
-            <span class="label-title">备注：</span>
+            <div class="label">
+                <span class="label-title">备注：</span>
 
-            <div class="label-content">
-                <textarea name="" v-model="remarks"></textarea>
+                <div class="label-content">
+                    <textarea name="" v-model="remarks"></textarea>
+                </div>
             </div>
-        </div>
 
-        <div class="result">
-            <span class="label-title">扫码结果 (共{{epcs.length}}件)</span>
-            <span @click="empty">清空</span>
-        </div>
+            <div class="result">
+                <span class="label-title">扫码结果 (共{{epcs.length}}件)</span>
+                <span @click="empty">清空</span>
+            </div>
 
-        <div class="result-content">
-            <van-tag class="num" v-for="(item,index) in epcs" plain>{{item}}<span class="del">x</span></van-tag>
-        </div>
+            <div class="result-content">
+                <van-tag class="num" v-for="(item,index) in epcs" plain>{{item}}<span class="del">x</span></van-tag>
+            </div>
 
-        <div class="operation">
-            <van-button class="btn" @click="start" v-if="!isStart" type="info">开始扫描</van-button>
-            <van-button class="btn" @click="end" v-if="isStart" type="info">暂停扫描</van-button>
-            <van-button class="btn" type="primary" @click="confirm">确认入库</van-button>
-        </div>
+            <div class="operation">
+                <van-button class="btn" @click="start" v-if="!isStart" type="info">开始扫描</van-button>
+                <van-button class="btn" @click="end" v-if="isStart" type="info">暂停扫描</van-button>
+                <van-button class="btn" type="primary" @click="confirm">确认入库</van-button>
+            </div>
 
+        </div>
     </div>
+
 </template>
 
 <script>
@@ -133,16 +140,22 @@
                         this.$router.go(-1)
                     }, 1500)
                 });
+            },
+            returnGo(){
+                this.$router.go(-1)
             }
         }
     }
 </script>
 
 <style scoped lang="scss">
-    .newStorage {
-        padding: 50px 25px 0;
-        background: #fff;
+    .newStorage{
+        background: #444956;
         height: 100%;
+    }
+    .newStorage_c {
+        padding: 50px 25px 0;
+
 
         .label {
             font-size: 14px;
@@ -167,6 +180,8 @@
                     width: 200px;
                     height: 100px;
                     resize: none;
+                    background: #444956;
+                    color: #fff;
                     border: 1px solid #bbb;
                     border-radius: 4px;
                     font-size: 14px;
