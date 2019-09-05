@@ -4,7 +4,14 @@
         <div class="label">
             <span class="label-title">商品：</span>
             <div class="label-content">
-                <span class="selProduct" @click="selProduct">选择商品</span>
+                <span class="selProduct" v-if="!product.id" @click="selProduct">选择商品</span>
+                <div v-else class="product" @click="selProduct">
+                    <img :src="product.image" alt="">
+                    <div>
+                        <div>{{product.name}}</div>
+                        <div>￥{{product.price}}</div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -12,7 +19,7 @@
             <span class="label-title">备注：</span>
 
             <div class="label-content">
-                <textarea name=""></textarea>
+                <textarea name="" v-model="remarks"></textarea>
             </div>
         </div>
 
@@ -27,71 +34,105 @@
 
         <div class="operation">
             <van-button class="btn" @click="start" v-if="!isStart" type="info">开始扫描</van-button>
-            <van-button class="btn" @click="end"  v-if="isStart" type="info">暂停扫描</van-button>
-            <van-button class="btn"  type="primary">确认入库</van-button>
+            <van-button class="btn" @click="end" v-if="isStart" type="info">暂停扫描</van-button>
+            <van-button class="btn" type="primary" @click="confirm">确认入库</van-button>
         </div>
 
     </div>
 </template>
 
 <script>
-    import scanner from  '../utils/scanner'
+
+    import {post_stockIn} from '@/api/index'
+    import scanner from '../utils/scanner'
     import Vue from 'vue';
-    import { Notify  } from 'vant';
+    import {Notify} from 'vant';
 
     Vue.use(Notify);
     export default {
         name: "newStorage",
-        data(){
-          return{
-              isStart:false,
-              scanner:null,
-              epcs:[]
-          }
-        },
-        watch:{
-            $route: {
-                handler: function(val, oldVal){
-                    console.log(val);
-                },
-                // 深度观察监听
-                deep: true
-            },
-        },
-        mounted(){
-            if (this.$route.query.product){
-                console.log(this.$route.query.product);
+        data() {
+            return {
+                isStart: false,
+                scanner: null,
+                epcs: [],
+                remarks: '',
             }
         },
-        methods:{
-            selProduct(){
-                this.$router.replace({
-                    path:'./selProduct'
+        computed: {
+            product() {
+                return this.$store.state.product
+            }
+        },
+        mounted() {
+        },
+        methods: {
+            selProduct() {
+                this.$router.push({
+                    path: './selProduct'
                 })
             },
-            start(){
+            start() {
                 this.scanner = Scanner.create(true);
                 let that = this;
                 this.isStart = true;
                 this.scanner.subscribe({
                     onScan: function (epcs) {
-                        that.epcs = [...that.epcs,...epcs]
+                        that.epcs = epcs
                     }
                 });
                 this.scanner.startScan();
             },
-            end(){
+            end() {
                 this.isStart = false;
 
                 //组件销毁，把资源释放
                 this.scanner.destroy();
             },
-            empty(){
-                if (this.isStart){
-                    Notify({ type: 'danger', message: '请先暂停扫描' });
+            empty() {
+                if (this.isStart) {
+                    Notify({type: 'danger', message: '请先暂停扫描'});
                     return false
                 }
                 this.epcs = []
+            },
+            confirm() {
+
+                if (this.isStart) {
+                    Notify({type: 'danger', message: '请先暂停扫描'});
+                    return false
+                }
+
+                if (!this.product.id) {
+                    Notify({type: 'danger', message: '请选择商品'});
+                    return false
+                }
+
+
+                if (!this.remarks) {
+                    Notify({type: 'danger', message: '请填写备注'});
+                    return false
+                }
+
+
+                if (this.epcs.length === 0) {
+                    Notify({type: 'danger', message: '请扫码epcs结果'});
+                    return false
+                }
+
+                let params = {
+                    remarks: this.remarks,
+                    epcs: this.epcs,
+                    productId: this.product.id
+                };
+
+                post_stockIn(params).then(res => {
+                    Notify({type: 'success', message: '入库成功'});
+
+                    setTimeout(() => {
+                        this.$router.go(-1)
+                    }, 1500)
+                });
             }
         }
     }
@@ -104,12 +145,12 @@
         height: 100%;
 
         .label {
-            font-size: 16px;
+            font-size: 14px;
             margin-bottom: 50px;
 
             .label-title {
                 display: inline-block;
-                min-width: 80px;
+                min-width: 60px;
                 vertical-align: top;
             }
 
@@ -128,7 +169,7 @@
                     resize: none;
                     border: 1px solid #bbb;
                     border-radius: 4px;
-                    font-size: 16px;
+                    font-size: 14px;
                     padding: 14px 0 0 14px;
                     box-sizing: border-box;
                 }
@@ -138,7 +179,7 @@
 
         .result {
             display: flex;
-            font-size: 16px;
+            font-size: 14px;
             margin-bottom: 20px;
 
             span {
@@ -151,15 +192,16 @@
             }
         }
 
-        .result-content{
+        .result-content {
             margin-bottom: 50px;
             z-index: 1;
-            .num{
+
+            .num {
                 margin: 8px 10px;
                 font-size: 12px;
                 position: relative;
 
-                .del{
+                .del {
                     position: absolute;
                     width: 12px;
                     height: 12px;
@@ -178,14 +220,36 @@
             }
         }
 
+        .product {
+            display: flex;
 
-        .operation{
+            img {
+                width: 80px;
+                height: 80px;
+            }
+
+            div {
+                margin-left: 10px;
+                flex: 3;
+
+                div:nth-child(1) {
+                    padding-top: 20px;
+                }
+
+                div:nth-child(2) {
+                    padding-top: 20px;
+                }
+            }
+        }
+
+        .operation {
             position: fixed;
             bottom: 0;
             left: 0;
             width: 100%;
             z-index: 9999;
-            .btn{
+
+            .btn {
                 width: 50%;
             }
         }

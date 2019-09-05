@@ -38,7 +38,7 @@
         name: "recordDetail",
         data(){
             return{
-                detail:null
+                detail:{}
             }
         },
         mounted() {
@@ -49,7 +49,6 @@
         methods:{
             get_detail(params){
                 stockIns_detail(params).then(res=>{
-                    console.log(res);
                     res.createdDate = formatAll( res.createdDate);
                     this.detail = res
                 })
@@ -65,7 +64,7 @@
         height: 100%;
         .label{
             display: flex;
-            font-size: 14px;
+            font-size: 12px;
             margin-bottom: 30px;
             span{
                 flex: 1;

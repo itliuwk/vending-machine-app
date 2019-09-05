@@ -17,7 +17,7 @@
                     </div>
                     <div class="content">
                         <div class="content-left">
-                            <img :src="item.image" alt="">
+                            <img :src="item.productImage" alt="">
                             <div class="content-left-info">
                                 <div>{{item.productName}}</div>
                                 <div class="oddMumbers">
@@ -83,6 +83,7 @@
 
 <style scoped lang="scss">
     .oddMumbers {
+        font-size: 14px;
         display: flex;
 
         span {
@@ -98,6 +99,7 @@
     .content {
         display: flex;
         margin-top: 15px;
+        font-size: 14px;
 
         > div {
             flex: 1;
@@ -124,7 +126,7 @@
             }
 
             .content-left-info {
-                width: 100%;
+                flex: 3;
 
                 div:nth-child(2) {
                     padding-top: 20px;

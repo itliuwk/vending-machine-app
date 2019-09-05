@@ -28,6 +28,9 @@
 
             }
         },
+        mounted(){
+            this.$store.commit('SET_PRODUCT','')
+        },
         methods: {
             toStorage(){
                 this.$router.push('./newStorage')

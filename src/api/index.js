@@ -57,4 +57,18 @@ export function stockIns_detail(params) {
 }
 
 
+/**
+ * 确认入库
+ * @param params
+ * @returns {PromiseLike<T> | Promise<T>}
+ */
+export function post_stockIn(data) {
+    return request({
+        url: "/rfid/android/api/stockIn",
+        method: 'post',
+        data:data
+    }).then(res => res.data.data)
+}
+
+
 

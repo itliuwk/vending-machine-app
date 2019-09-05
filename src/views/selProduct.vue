@@ -55,11 +55,19 @@
                 finished: false
             }
         },
+
         mounted() {
+
             this.get_list()
         },
         methods: {
             onSearch() {
+                this.list = [];
+                this.params = {
+                    query: '',
+                    from: 0,
+                    size: 10,
+                };
                 this.get_list()
             },
             get_list() {
@@ -73,14 +81,22 @@
                 })
             },
             onLoad() {
+                this.params = {
+                    ...this.params,
+                    from: this.params.size +  this.params.from
+                };
                 this.get_list();
                 // 加载状态结束
 
             },
             radioHandClick(e, val) {
-                this.$router.replace({
-                    path: './newStorage?product=' + val
-                });
+
+                // this.$router.replace({
+                //     path: './newStorage?product=' + val
+                // });
+                this.$router.go(-1);
+                this.$store.commit('SET_PRODUCT', val)
+
             }
         }
     }
@@ -125,6 +141,7 @@
 
                 .content-left-info {
                     margin-left: 20px;
+
                     div:nth-child(2) {
                         padding-top: 20px;
                     }
