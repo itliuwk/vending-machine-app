@@ -19,8 +19,12 @@ service.interceptors.request.use(
 
       //如果参数value是空，就不需要传给后台
       if (config.params) {
-        var _params = JSON.parse(JSON.stringify(config.params))
-        //   console.log(_params);
+        var _params = JSON.parse(JSON.stringify(config.params));
+          _params = {
+              ..._params,
+              access_token:getCookie('access_token')
+          };
+          //   console.log(_params);
         //   _.map(_params, (value, key) => {
         //   if (!value && typeof value != "number"/* 排斥数字判断 */ && typeof value !== 'boolean'/* 排斥boolean判断 */) {
         //     if (config.noIngore && config.noIngore.findIndex((item => item == key)) >= 0) {
@@ -49,7 +53,9 @@ service.interceptors.response.use(
     error => {
       console.log('err' + error) // for debug
       if (error.response && error.response.status == 401) {
-
+          setTimeout(() => {
+              window.location.href = "#/login"
+          }, 1000);
 
       }
       return Promise.reject(error)

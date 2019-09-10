@@ -24,6 +24,7 @@
 </template>
 
 <script>
+    import {setCookie} from '../utils/cookie';
     export default {
         name: "index",
         data() {
@@ -40,6 +41,7 @@
                 this.$router.push('./storageRecord')
             },
             toLogin() {
+                setCookie("access_token", '');
                 this.$router.push('./login')
             }
         }

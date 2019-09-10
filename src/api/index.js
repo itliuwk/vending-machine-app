@@ -64,7 +64,7 @@ export function stockIns_detail(params) {
  */
 export function post_stockIn(data) {
     return request({
-        url: "/rfid/android/api/stockIn",
+        url: "/rfid/android/api/stockIns",
         method: 'post',
         data:data
     }).then(res => res.data.data)

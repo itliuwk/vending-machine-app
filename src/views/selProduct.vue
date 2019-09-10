@@ -64,7 +64,7 @@
                 this.params = {
                     query: '',
                     from: 0,
-                    size: 10,
+                    size: 20,
                 };
                 this.get_list()
             },
@@ -72,8 +72,8 @@
                 products_list(this.params).then(res => {
                     this.list = [...this.list, ...res];
                     this.loading = false;
-                    // 数据全部加载完成
-                    if (this.list.length >= 40) {
+                    // // 数据全部加载完成
+                    if (res.length < this.params.size) {
                         this.finished = true;
                     }
                 })

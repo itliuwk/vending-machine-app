@@ -21,7 +21,8 @@
         </van-cell-group>
 
         <div class="sign-in">
-            <van-button class="sign-in-btn" @click="signIn" :loading ="Loading" loading-text="登录" type="info">登录</van-button>
+            <van-button class="sign-in-btn" @click="signIn" :loading="Loading" loading-text="登录" type="info">登录
+            </van-button>
         </div>
 
     </div>
@@ -29,34 +30,51 @@
 
 <script>
     import Vue from 'vue';
-    import { Notify  } from 'vant';
+    import {Notify} from 'vant';
+    import {loginByUsername} from  '../api/login';
+    import {setCookie} from '../utils/cookie';
 
     Vue.use(Notify);
     export default {
         name: "login",
         data() {
             return {
-                Loading:false,
-                username: '13444444444',
+                Loading: false,
+                username: 'test',
                 password: '123456'
             }
         },
-        methods:{
-            signIn(){
-                if (!this.username){
-                    Notify({ type: 'danger', message: '请输入账号' });
+        methods: {
+            signIn() {
+                if (!this.username) {
+                    Notify({type: 'danger', message: '请输入账号'});
 
                     return false;
                 }
-                if (!this.password){
-                    Notify({ type: 'danger', message: '请输入密码' });
+                if (!this.password) {
+                    Notify({type: 'danger', message: '请输入密码'});
                     return false;
                 }
                 this.Loading = true;
-                setTimeout(()=>{
+                loginByUsername(this.username, this.password).then(response => {
+                    console.log(response);
+                    const data = response.data;
+                    if (data.access_token) {
+                        setCookie("access_token", data.access_token);
+                        Notify({type: 'success', message: '登录成功'});
+                        setTimeout(() => {
+                            this.Loading = false;
+                            this.$router.push('/index');
+                        }, 1000)
+
+                    }
+                }).catch(err=>{
+                    console.log(err);
+                    Notify({type: 'danger', message: err});
                     this.Loading = false;
-                    this.$router.push('/index');
-                },1000)
+                })
+
+
             }
         }
     }
@@ -69,14 +87,17 @@
         padding: 20px;
         padding-top: 200px;
         height: 100%;
-        .sign-in{
+
+        .sign-in {
             text-align: center;
             margin-top: 40px;
-            .sign-in-btn{
+
+            .sign-in-btn {
                 width: 100%;
             }
         }
-        .password{
+
+        .password {
         }
     }
 </style>

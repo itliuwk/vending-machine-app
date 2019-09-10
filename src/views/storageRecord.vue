@@ -8,6 +8,7 @@
                 class="list"
                 v-model="loading"
                 :finished="finished"
+                :immediate-check="false"
                 finished-text="没有更多了"
                 @load="onLoad"
         >
@@ -69,15 +70,19 @@
 
                     this.list = [...this.list, ...res];
                     this.loading = false;
-
-                    // 数据全部加载完成
-                    if (this.list.length >= 40) {
+                    // // 数据全部加载完成
+                    if (res.length < this.params.size) {
                         this.finished = true;
                     }
                 })
             },
             onLoad() {
-                this.get_stockIns();
+
+                setTimeout(()=>{
+                    this.get_stockIns();
+                    this.finished = true;
+                },500);
+
                 // 加载状态结束
             },
             detail(val) {
