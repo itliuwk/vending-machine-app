@@ -69,8 +69,7 @@
 
                     }
                 }).catch(err=>{
-                    console.log(err);
-                    Notify({type: 'danger', message: err});
+                    Notify({type: 'danger', message: '请检查账号或密码是否正确'});
                     this.Loading = false;
                 })
 

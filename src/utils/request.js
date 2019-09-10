@@ -1,5 +1,8 @@
 import axios from 'axios'
 import { BASE_API } from '../config';
+import Vue from 'vue';
+import {Notify} from 'vant';
+Vue.use(Notify);
 
 import { getCookie } from './cookie';
 
@@ -53,9 +56,10 @@ service.interceptors.response.use(
     error => {
       console.log('err' + error) // for debug
       if (error.response && error.response.status == 401) {
+          Notify({type: 'danger', message: '后台出现错误,请重新登录'});
           setTimeout(() => {
               window.location.href = "#/login"
-          }, 1000);
+          }, 2000);
 
       }
       return Promise.reject(error)

@@ -78,10 +78,7 @@
             },
             onLoad() {
 
-                setTimeout(()=>{
-                    this.get_stockIns();
-                    this.finished = true;
-                },500);
+                this.get_stockIns();
 
                 // 加载状态结束
             },

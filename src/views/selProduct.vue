@@ -9,6 +9,7 @@
             <van-list
                     v-model="loading"
                     :finished="finished"
+                    :immediate-check="false"
                     finished-text="没有更多了"
                     @load="onLoad"
             >
