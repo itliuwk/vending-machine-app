@@ -30,6 +30,20 @@ export function stockIn(params) {
 }
 
 
+/**
+ * 校验标签
+ * @param params
+ * @returns {PromiseLike<T> | Promise<T>}
+ */
+export function verify(params) {
+    return request({
+        url: "/rfid/android/api/stockIns/verify",
+        method: 'POST',
+        data:params
+    }).then(res => res.data.data)
+}
+
+
 
 /**
  * 入库记录

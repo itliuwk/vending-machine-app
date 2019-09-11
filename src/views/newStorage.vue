@@ -48,7 +48,7 @@
             <div class="operation" :style="{top:(docmHeight-48)+'px'}">
                 <van-button class="btn" @click="start" v-if="!isStart" type="info">开始扫描</van-button>
                 <van-button class="btn" @click="end" v-if="isStart" type="info">暂停扫描</van-button>
-                <van-button class="btn" type="primary" @click="confirm">确认入库</van-button>
+                <van-button class="btn" type="primary" @click="checkTag">校验标签</van-button>
             </div>
 
         </div>
@@ -92,12 +92,12 @@
                 })
             },
             start() {
-                this.scanner = Scanner.create(false);
+                this.scanner = Scanner.create(true);
                 let that = this;
                 this.isStart = true;
                 this.scanner.subscribe({
                     onScan: function (epcs) {
-                        that.epcs = JSON.parse(epcs);
+                        that.epcs =epcs
                     }
                 });
                 this.scanner.startScan();
@@ -118,7 +118,7 @@
             del(idx){
                 this.epcs.splice(idx,1)
             },
-            confirm() {
+            checkTag() {
                 if (this.isStart) {
                     Notify({type: 'danger', message: '请先暂停扫描'});
                     return false
@@ -129,12 +129,10 @@
                     return false
                 }
 
-
-                if (!this.remarks) {
-                    Notify({type: 'danger', message: '请填写备注'});
+                if (!this.price) {
+                    Notify({type: 'danger', message: '请填写价格'});
                     return false
                 }
-
 
                 if (this.epcs.length === 0) {
                     Notify({type: 'danger', message: '请扫码epcs结果'});
@@ -148,13 +146,7 @@
                     price:this.price
                 };
 
-                post_stockIn(params).then(res => {
-                    Notify({type: 'success', message: '入库成功'});
-
-                    setTimeout(() => {
-                        this.$router.go(-1)
-                    }, 1500)
-                });
+                this.$router.push('/checkTag?params='+JSON.stringify(params))
             },
             returnGo(){
                 this.$router.go(-1)
