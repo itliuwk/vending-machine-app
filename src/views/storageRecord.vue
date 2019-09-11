@@ -28,7 +28,7 @@
                                 <div>{{item.productName}}</div>
                                 <div class="oddMumbers">
                                     <span style="color: red">￥{{item.productPrice}}</span>
-                                    <span>{{item.quantity}}件</span>
+                                    <span>{{item.epcCount}}件</span>
                                 </div>
                             </div>
                         </div>
@@ -51,7 +51,7 @@
                 params: {
                     query: '',
                     from: 0,
-                    size: 10,
+                    size: 20,
                 },
                 loading: false,
                 finished: false

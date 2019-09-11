@@ -14,9 +14,17 @@
                         <img :src="product.image" alt="">
                         <div>
                             <div>{{product.name}}</div>
-                            <div>￥{{product.price}}</div>
+                            <div style="color: red">￥{{product.price}} 元</div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div class="label">
+                <span class="label-title">价格：</span>
+
+                <div class="label-content">
+                    <input  v-model="price" />
                 </div>
             </div>
 
@@ -34,10 +42,10 @@
             </div>
 
             <div class="result-content">
-                <van-tag class="num" v-for="(item,index) in epcs" plain>{{item}}<span class="del" @click="del(index)">x</span></van-tag>
+                <van-tag class="num" v-for="(item,index) in epcs" plain>{{item}}<span  v-if="!isStart" class="del" @click="del(index)">x</span></van-tag>
             </div>
 
-            <div class="operation">
+            <div class="operation" :style="{top:(docmHeight-48)+'px'}">
                 <van-button class="btn" @click="start" v-if="!isStart" type="info">开始扫描</van-button>
                 <van-button class="btn" @click="end" v-if="isStart" type="info">暂停扫描</van-button>
                 <van-button class="btn" type="primary" @click="confirm">确认入库</van-button>
@@ -64,11 +72,15 @@
                 scanner: null,
                 epcs: [],
                 remarks: '',
+                docmHeight: document.documentElement.clientHeight,
             }
         },
         computed: {
             product() {
                 return this.$store.state.product
+            },
+            price(){
+                return this.$store.state.product.price
             }
         },
         mounted() {
@@ -80,12 +92,12 @@
                 })
             },
             start() {
-                this.scanner = Scanner.create(true);
+                this.scanner = Scanner.create(false);
                 let that = this;
                 this.isStart = true;
                 this.scanner.subscribe({
                     onScan: function (epcs) {
-                        that.epcs = epcs
+                        that.epcs = JSON.parse(epcs);
                     }
                 });
                 this.scanner.startScan();
@@ -132,7 +144,8 @@
                 let params = {
                     remarks: this.remarks,
                     epcs: this.epcs,
-                    productId: this.product.id
+                    productId: this.product.id,
+                    price:this.price
                 };
 
                 post_stockIn(params).then(res => {
@@ -154,6 +167,7 @@
     .newStorage{
         height: 100vh;
         background: #444956;
+        position: relative;
 
     }
     .newStorage_c {
@@ -190,6 +204,21 @@
                     font-size: 14px;
                     padding: 14px 0 0 14px;
                     box-sizing: border-box;
+                }
+
+
+
+                input{
+                    background: #444956;
+                    color: #fff;
+                    height: 30px;
+                    line-height: 30px;
+                    border-radius: 4px;
+                    font-size: 14px;
+                    padding-left: 14px;
+                    border: 1px solid #bbb;
+                    box-sizing: border-box;
+
                 }
             }
         }
@@ -261,8 +290,8 @@
         }
 
         .operation {
-            position: fixed;
-            bottom: 0;
+            position: absolute;
+            top: 0;
             left: 0;
             width: 100%;
             z-index: 9999;

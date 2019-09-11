@@ -4,7 +4,19 @@
             <img src="../assets/return.png" alt="">
             <span>商品选择</span>
         </div>
-        <van-search placeholder="请输入商品名"  @search="onSearch" v-model="params.query" />
+
+        <van-search
+                v-model="params.query"
+                placeholder="请输入商品名"
+                show-action
+                shape="round"
+                @search="onSearch"
+        >
+            <div slot="action" @click="onSearch">搜索</div>
+        </van-search>
+
+
+<!--        <van-search placeholder="请输入商品名"  @search="onSearch" v-model="params.query" />-->
         <div class="list">
             <van-list
                     v-model="loading"
@@ -48,7 +60,7 @@
                 params: {
                     query: '',
                     from: 0,
-                    size: 10,
+                    size: 20,
                 },
                 loading: false,
                 finished: false
@@ -63,7 +75,7 @@
             onSearch() {
                 this.list = [];
                 this.params = {
-                    query: '',
+                    ...this.params,
                     from: 0,
                     size: 20,
                 };
@@ -71,6 +83,11 @@
             },
             get_list() {
                 products_list(this.params).then(res => {
+                    res.map(item=>{
+                       item.image= item.image +'?imageView2/1/w/200/h/200';
+                        return item;
+                    });
+
                     this.list = [...this.list, ...res];
                     this.loading = false;
                     // // 数据全部加载完成
@@ -108,7 +125,7 @@
 
 
         .list {
-            height: calc(100% - 150px);
+            height: calc(100% - 144px);
             overflow: auto;
             background: #444956;
 
@@ -177,12 +194,16 @@
         /deep/ .van-search{
             background: #444956!important;
             border-bottom: 0.02667rem solid #666;
+
+            .van-search__action{
+                color: #fff;
+            }
         }
         /deep/ .van-search__content{
             background: #444956;
         }
 
-        /deep/  .van-search .van-cell__value--alone{
+        /deep/  .van-search .van-cell--borderless{
             border: 1px solid #fff;
             border-radius: 5px;
             padding-left: 5px;

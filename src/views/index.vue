@@ -10,10 +10,10 @@
                 <img src="../assets/storageRecord.png" alt="">
                 入库记录
             </div>
-            <div class="item">
-                <img src="../assets/changePassword.png" alt="">
-                修改密码
-            </div>
+<!--            <div class="item">-->
+<!--                <img src="../assets/changePassword.png" alt="">-->
+<!--                修改密码-->
+<!--            </div>-->
             <div class="item" @click="toLogin">
                 <img src="../assets/signOut.png" alt="">
                 退出

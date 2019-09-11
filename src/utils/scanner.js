@@ -1,19 +1,26 @@
 (function () {
 
-
-    let Scanner = {
+    var instance;
+    var Scanner = {
 
         create: function (dev) {
-            if (dev) {
-                return new DevScanner();
-            } else {
-                return new AndroidScanner();
+
+            if (instance) {
+                return instance;
             }
+
+            if (dev) {
+
+                instance = new DevScanner();
+            } else {
+                instance = new AndroidScanner();
+            }
+            return instance;
         }
     };
 
 
-    let DevScanner = function () {
+    var DevScanner = function () {
         this.subs = [];
         this.scanning = false;
     };
@@ -28,16 +35,16 @@
 
 
             if (!this.interval) {
-                let self = this;
+                var self = this;
                 this.scanning = true;
                 this.interval = setInterval(function () {
 
-                    let epcs = [];
-                    for (let i = 0; i < 10; i++) {
+                    var epcs = [];
+                    for (var i = 0; i < 10; i++) {
                         epcs.push(String(Math.random()).substr(1));
                     }
 
-                    for (let i = 0; i < self.subs.length; i++) {
+                    for (var i = 0; i < self.subs.length; i++) {
                         self.subs[i].onScan(epcs);
                     }
 
@@ -57,25 +64,51 @@
         destroy: function () {
             this.stopScan();
             this.subs = undefined;
+            instance = undefined;
         }
 
     };
 
 
-    let AndroidScanner = function () {
+    var AndroidScanner = function () {
         this.subs = [];
         this.scanning = false;
     };
 
+    window.updateEpcs = function (epcs) {
+
+        if (instance) {
+            instance.onScanned(epcs);
+        }
+    };
+
+
     AndroidScanner.prototype = {
 
-        subscribe: function () {
+        subscribe: function (sub) {
+            this.subs.push(sub);
         },
 
         startScan: function () {
+            VM_PAGE.startScan();
+        },
+
+        onScanned: function (epcs) {
+            var self = this;
+            for (var i = 0; i < self.subs.length; i++) {
+                self.subs[i].onScan(epcs);
+            }
+
         },
 
         stopScan: function () {
+
+            VM_PAGE.stopScan();
+        },
+        destroy: function () {
+            this.stopScan();
+            this.subs = undefined;
+            instance = undefined;
         }
 
     };

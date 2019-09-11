@@ -16,7 +16,7 @@
             </div>
             <div class="label">
                 <span>入库件数</span>
-                <span>{{detail.quantity}}件</span>
+                <span>{{detail.epcCount}} 件</span>
             </div>
             <div class="product">
                 <span>入库商品</span>
@@ -75,9 +75,12 @@
         height: 100%;
         color: #ddd;
         background: #444956;
+        overflow: hidden;
     }
     .recordDetail-c {
+        height: calc(100% - 66px);
         padding: 20px;
+        overflow: auto;
 
 
         .label {
