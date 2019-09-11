@@ -24,7 +24,7 @@
                 <span class="label-title">价格：</span>
 
                 <div class="label-content">
-                    <input  v-model="price" />
+                    <input v-model="price"/>
                 </div>
             </div>
 
@@ -42,7 +42,9 @@
             </div>
 
             <div class="result-content">
-                <van-tag class="num" v-for="(item,index) in epcs" plain>{{item}}<span  v-if="!isStart" class="del" @click="del(index)">x</span></van-tag>
+                <van-tag class="num" v-for="(item,index) in epcs" plain>{{item}}<span v-if="!isStart" class="del"
+                                                                                      @click="del(index)">x</span>
+                </van-tag>
             </div>
 
             <div class="operation" :style="{top:(docmHeight-48)+'px'}">
@@ -72,18 +74,25 @@
                 scanner: null,
                 epcs: [],
                 remarks: '',
+                price: '',
                 docmHeight: document.documentElement.clientHeight,
             }
         },
         computed: {
             product() {
+                this.price = this.$store.state.product.price;
                 return this.$store.state.product
             },
-            price(){
-                return this.$store.state.product.price
+            params() {
+                return this.$store.state.params
             }
         },
         mounted() {
+            if (this.params.price){
+                this.price = this.params.price;
+                this.remarks = this.params.remarks;
+                this.epcs = this.params.epcs;
+            }
         },
         methods: {
             selProduct() {
@@ -92,12 +101,14 @@
                 })
             },
             start() {
+                // this.scanner = Scanner.create(false);
                 this.scanner = Scanner.create(true);
                 let that = this;
                 this.isStart = true;
                 this.scanner.subscribe({
                     onScan: function (epcs) {
-                        that.epcs =epcs
+                        // that.epcs = JSON.parse(epcs)
+                        that.epcs = epcs
                     }
                 });
                 this.scanner.startScan();
@@ -115,8 +126,8 @@
                 }
                 this.epcs = []
             },
-            del(idx){
-                this.epcs.splice(idx,1)
+            del(idx) {
+                this.epcs.splice(idx, 1)
             },
             checkTag() {
                 if (this.isStart) {
@@ -143,12 +154,14 @@
                     remarks: this.remarks,
                     epcs: this.epcs,
                     productId: this.product.id,
-                    price:this.price
+                    price: this.price
                 };
 
-                this.$router.push('/checkTag?params='+JSON.stringify(params))
+                this.$store.commit('SET_PARAMS', params);
+
+                this.$router.push('/checkTag')
             },
-            returnGo(){
+            returnGo() {
                 this.$router.go(-1)
             }
         }
@@ -156,14 +169,18 @@
 </script>
 
 <style scoped lang="scss">
-    .newStorage{
+    .newStorage {
         height: 100vh;
         background: #444956;
         position: relative;
+        overflow: hidden;
 
     }
+
     .newStorage_c {
-        padding: 50px 25px 0;
+        padding: 50px 25px 50px;
+        height: calc(100% - 59px);
+        overflow: auto;
 
 
         .label {
@@ -199,8 +216,7 @@
                 }
 
 
-
-                input{
+                input {
                     background: #444956;
                     color: #fff;
                     height: 30px;
@@ -235,6 +251,7 @@
 
             z-index: 1;
             background: #444956;
+
             .num {
                 margin: 8px 10px;
                 font-size: 12px;

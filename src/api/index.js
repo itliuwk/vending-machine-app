@@ -7,7 +7,6 @@ import request from '@/utils/request'
  * @returns {PromiseLike<T> | Promise<T>}
  */
 export function products_list(params) {
-    console.log(params);
     return request({
         url: "/rfid/android/api/products",
         method: 'get',

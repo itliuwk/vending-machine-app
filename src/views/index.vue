@@ -31,7 +31,8 @@
             return {}
         },
         mounted() {
-            this.$store.commit('SET_PRODUCT', '')
+            this.$store.commit('SET_PRODUCT', '');
+            this.$store.commit('SET_PARAMS', '');
         },
         methods: {
             toStorage() {

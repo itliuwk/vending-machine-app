@@ -14,9 +14,11 @@
                         <div>{{item}}</div>
                         <div>可入库</div>
                     </li>
-                    <li v-for="(item,index) in invalid" :key="index">
-                        <div>{{item}}</div>
-                        <div>已入库，无效标签</div>
+                </ul>
+                <ul>
+                    <li v-for="(item1,index1) in invalid" :key="index1">
+                        <div>{{item1}}</div>
+                        <div style="color: red">已入库，无效标签</div>
                     </li>
                 </ul>
             </div>
@@ -42,11 +44,15 @@
         name: "checkTag",
         data() {
             return {
-                vaild: [],
+                valid: [],
                 invalid: [],
-                params: {},
                 count: 0,
                 docmHeight: document.documentElement.clientHeight,
+            }
+        },
+        computed: {
+            params() {
+                return this.$store.state.params
             }
         },
         mounted() {
@@ -54,11 +60,7 @@
         },
         methods: {
             verify() {
-                let params = this.$route.query.params;
-                if (params) {
-                    params = JSON.parse(params);
-                    this.params = params;
-                }
+                let params = this.params;
                 verify(params.epcs).then(res => {
                     this.invalid = res.invalid;
                     this.valid = res.valid;
