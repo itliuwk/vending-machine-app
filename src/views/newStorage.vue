@@ -42,7 +42,7 @@
             </div>
 
             <div class="result-content">
-                <van-tag class="num" v-for="(item,index) in epcs" plain @click="del(index)">{{item}}
+                <van-tag class="num" v-for="(item,index) in epcs" plain @click="del(index)" >{{item}}
 				<span v-if="!isStart" class="del" @click="del(index)">x</span>
                 </van-tag>
             </div>
