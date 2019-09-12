@@ -42,8 +42,8 @@
             </div>
 
             <div class="result-content">
-                <van-tag class="num" v-for="(item,index) in epcs" plain>{{item}}<span v-if="!isStart" class="del"
-                                                                                      @click="del(index)">x</span>
+                <van-tag class="num" v-for="(item,index) in epcs" plain @click="del(index)">{{item}}
+				<span v-if="!isStart" class="del" @click="del(index)">x</span>
                 </van-tag>
             </div>
 
@@ -101,14 +101,14 @@
                 })
             },
             start() {
-                // this.scanner = Scanner.create(false);
-                this.scanner = Scanner.create(true);
+                this.scanner = Scanner.create(false);
+                // this.scanner = Scanner.create(true);
                 let that = this;
                 this.isStart = true;
                 this.scanner.subscribe({
                     onScan: function (epcs) {
-                        // that.epcs = JSON.parse(epcs)
-                        that.epcs = epcs
+                        that.epcs = JSON.parse(epcs)
+                        // that.epcs = epcs
                     }
                 });
                 this.scanner.startScan();
