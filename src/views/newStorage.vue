@@ -4,7 +4,7 @@
             <img src="../assets/return.png" alt="">
             <span>新建入库</span>
         </div>
-        <div class="newStorage_c">
+        <div class="newStorage_c" :style="{height:(docmHeight)+'px'}">
 
             <div class="label">
                 <span class="label-title">商品：</span>
@@ -42,12 +42,12 @@
             </div>
 
             <div class="result-content">
-                <van-tag class="num" v-for="(item,index) in epcs" plain @click="del(index)" >{{item}}
-				<span v-if="!isStart" class="del" @click="del(index)">x</span>
+                <van-tag class="num" v-for="(item,index) in epcs" plain @click="del(index)">{{item}}
+                    <span v-if="!isStart" class="del" @click="del(index)">x</span>
                 </van-tag>
             </div>
 
-            <div class="operation" :style="{top:(docmHeight-48)+'px'}">
+            <div class="operation" :style="{top:(operationH)+'px'}">
                 <van-button class="btn" @click="start" v-if="!isStart" type="info">开始扫描</van-button>
                 <van-button class="btn" @click="end" v-if="isStart" type="info">暂停扫描</van-button>
                 <van-button class="btn" type="primary" @click="checkTag">校验标签</van-button>
@@ -76,6 +76,7 @@
                 remarks: '',
                 price: '',
                 docmHeight: document.documentElement.clientHeight,
+                operationH: 0
             }
         },
         computed: {
@@ -88,11 +89,17 @@
             }
         },
         mounted() {
-            if (this.params.price){
+            if (this.params.price) {
                 this.price = this.params.price;
                 this.remarks = this.params.remarks;
                 this.epcs = this.params.epcs;
             }
+
+            let documentH = document.documentElement.clientHeight;
+            let returnTitleH = document.getElementsByClassName('returnTitle')[0].clientHeight;
+            let operationH = document.getElementsByClassName('operation')[0].clientHeight;
+            this.docmHeight = documentH - returnTitleH;
+            this.operationH = documentH - operationH;
         },
         methods: {
             selProduct() {
@@ -179,7 +186,6 @@
 
     .newStorage_c {
         padding: 50px 25px 50px;
-        height: calc(100% - 59px);
         overflow: auto;
 
 
